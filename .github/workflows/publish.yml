@@ -1,0 +1,44 @@
+name: Generate and Publish Timeline
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch if it's not 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipreqs
+        pipreqs .
+        pip install -r requirements.txt
+
+    - name: Run script
+      run: python parse_monarchs.py
+
+    - name: Create output directory
+      run: mkdir -p output
+
+    - name: Move HTML file
+      run: mv Timeline_of_Chinese_Dynasties_and_Monarchs.html output/index.html
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./output
