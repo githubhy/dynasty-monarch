@@ -232,4 +232,4 @@ layout_image = go.Layout(
 fig_image = go.Figure(data=traces_image, layout=layout_image)
 
 # Save the plot to an HTML file
-fig_image.write_html("Timeline_of_Major_Chinese_Dynasties.html")
+fig_image.write_html("Timeline_of_Chinese_Dynasties_and_Monarchs.html")
